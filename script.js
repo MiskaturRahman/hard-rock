@@ -1,7 +1,7 @@
 const input = document.getElementById('input');
 const searchButton = document.getElementById('searchButton');
 const searchResult = document.getElementById('search-result');
-const getLyrics = document.getElementById("getLyrics");
+const getLyrics = document.getElementsByClassName("getLyrics");
 const searchValue = input.value;
 
 searchButton.addEventListener('click', function () {
@@ -27,17 +27,26 @@ searchButton.addEventListener('click', function () {
                 </div>
                 <div class="col-md-3 text-md-right text-center">
                     <button id="getLyrics"
-                     data-artist="${song.artist.name}" data-songtitle="${song.title}" class="btn btn-success">Get Lyrics</button>
+                     class="btn btn-success" onclick="lyrics('${song.artist.name}','${song.title}')">Get Lyrics</button>
                 </div>
             </div>`).join("")
             }
             `;
     }
-
-
 })
 
+function lyrics(artist, title) {
+    const lyricsContainer = document.getElementById("song-lyrics")
+    fetch(`https://api.lyrics.ovh/v1/${artist}/${title}`)
+        .then(res => res.json())
+        .then(data => {
+            const p = document.createElement('p')
+            p.innerHTML = `${data.lyrics}`
+            lyricsContainer.appendChild(p)
+            console.log(p);
+        })
 
+}
 
 
 
